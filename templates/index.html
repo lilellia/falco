@@ -5,24 +5,80 @@
 <head>
 	<title>Project Falco!</title>
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+
 </head>
 
 <body>
 	<div>Sample Text </div> 
 	{% if error %} <div style="color:red"> {{ error.msg }} </div> {% endif %}
-	<form>
-		<select>
+	<table>
+		<thead>	
+			<th>Location</th>
+			<th>Room Number</th>
+		</thead>
+		<tbody>
+		<tr>
+		<td><select id="origin-select">
 			{% for spot in locations %}
 				<option value="{{ spot }}">{{spot}}</option>
-			{% end for %}
-		</select>
-		<input type="text"><br>
-		<select>
+			{% endfor %}
+				<option value = "201 W 19th Ave, Columbus, OH 43210">Smith Lab</option>
+				<option value = "1813 N High St, Columbus, OH 43210" selected="selected">Library</option>
+		</select></td>
+		<td><input type="text"><br></td>
+		</tr><tr><td>
+		<select id="destination-select">
 			{% for spot in locations %}
 				<option value="{{ spot }}">{{spot}}</option>
-			{% end for %}
-		</select>
-		<input type="text"><br>
-		<button>Submit</button>
-	</form>
+			{% endfor %}
+				<option value = "201 W 19th Ave, Columbus, OH 43210" selected="selected">Smith Lab</option>
+				<option value = "1850 College Rd N, Columbus, OH, 43210">Library</option>
+		</select></td><td>
+		<input type="text"><br></td></tr>
+		<tr><td>
+		<button onclick="loadDirections()" style="background-color:#1565C0;color:white; font-weight:bold;width:100%;">Submit</button></td></tr></tbody>
+	</table>
+	<div id="map" style="height:400px;width:100%;"></div>
+	<div id="directions-panel" style="height:100px;width100%"></div>
+	<script>
+		var directionsService;
+		var map;
+		var directionsDisplay;
+		/**
+		*	Configure and init the map
+		*	@requires: There is an item,preferably a div, of id "map"
+		*	@requires: There is an item,preferably a div of id "directions-panel"
+		*/
+		function initMap(){
+			directionsService = new google.maps.DirectionsService();
+			numbersGarden = {lat:40.002256, lng: -83.016232};
+			map = new google.maps.Map(document.getElementById('map'), {zoom:16, center: numbersGarden});
+			directionsDisplay = new google.maps.DirectionsRenderer();
+		}
+		/**
+		*	Given the addresses of the orign and selected address, it will display the directions on this map. 
+		*/
+		function loadDirections(){
+			originSelect = document.getElementById("origin-select");
+			selectedOrigin = originSelect.options[originSelect.selectedIndex].value;
+
+			destinationSelect = document.getElementById("destination-select");
+			selectedDestination = destinationSelect.options[destinationSelect .selectedIndex].value;
+			
+			directions ={
+				origin: selectedOrigin,
+				destination: selectedDestination,
+				travelMode: 'WALKING'
+			};
+			directionsService.route(directions, function(result, status){
+				if(status == 'OK'){
+					directionsDisplay.setDirections(result);
+				}
+			});
+			directionsDisplay.setMap(map);
+			directionsDisplay.setPanel(document.getElementById('directions-panel'));
+
+		}
+	</script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJUG4FX4vz-rt3e6UQSMYP6pKn-dKjoyA&callback=initMap"></script>
 </body>
