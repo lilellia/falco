@@ -38,4 +38,5 @@ def result():
 	return render_template('result.html', dynamic_image=url_for('static', filename='smith_lab_2.png'))
 
 if __name__ == '__main__':
-	app.run()
+	port = int(os.environ.get("PORT", 5000))
+	app.run(host='0.0.0.0', port=port)
