@@ -8,5 +8,21 @@
 </head>
 
 <body>
-	Hello World!
+	<div>Sample Text </div> 
+	{% if error %} <div style="color:red"> {{ error.msg }} </div> {% endif %}
+	<form>
+		<select>
+			{% for spot in locations %}
+				<option value="{{ spot }}">{{spot}}</option>
+			{% end for %}
+		</select>
+		<input type="text"><br>
+		<select>
+			{% for spot in locations %}
+				<option value="{{ spot }}">{{spot}}</option>
+			{% end for %}
+		</select>
+		<input type="text"><br>
+		<button>Submit</button>
+	</form>
 </body>
