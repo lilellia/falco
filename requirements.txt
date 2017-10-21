@@ -1,0 +1,11 @@
+click==6.7
+Flask==0.12.2
+itsdangerous==0.24
+Jinja2==2.9.6
+MarkupSafe==1.0
+numpy==1.13.3
+olefile==0.44
+Pillow==4.3.0
+PyPDF2==1.26.0
+pytesseract==0.1.7
+Werkzeug==0.12.2

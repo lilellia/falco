@@ -9,10 +9,10 @@
 </head>
 
 <body>
-	<div>Sample Text </div> 
+	<div>Sample Text </div>
 	{% if error %} <div style="color:red"> {{ error.msg }} </div> {% endif %}
 	<table>
-		<thead>	
+		<thead>
 			<th>Location</th>
 			<th>Room Number</th>
 		</thead>
@@ -22,8 +22,8 @@
 			{% for spot in locations %}
 				<option value="{{ spot }}">{{spot}}</option>
 			{% endfor %}
-				<option value = "201 W 19th Ave, Columbus, OH 43210">Smith Lab</option>
-				<option value = "1813 N High St, Columbus, OH 43210" selected="selected">Library</option>
+			<option value = "174 W 18th Ave Columbus, OH 43210" selected="selected">Smith Lab</option>
+			<option value = "1739 N High St Columbus, OH 43210">Ohio Union</option>
 		</select></td>
 		<td><input type="text"><br></td>
 		</tr><tr><td>
@@ -31,8 +31,8 @@
 			{% for spot in locations %}
 				<option value="{{ spot }}">{{spot}}</option>
 			{% endfor %}
-				<option value = "201 W 19th Ave, Columbus, OH 43210" selected="selected">Smith Lab</option>
-				<option value = "1850 College Rd N, Columbus, OH, 43210">Library</option>
+				<option value = "174 W 18th Ave Columbus, OH 43210" selected="selected">Smith Lab</option>
+				<option value = "1739 N High St Columbus, OH 43210">Ohio Union</option>
 		</select></td><td>
 		<input type="text"><br></td></tr>
 		<tr><td>
@@ -56,15 +56,14 @@
 			directionsDisplay = new google.maps.DirectionsRenderer();
 		}
 		/**
-		*	Given the addresses of the orign and selected address, it will display the directions on this map. 
+		*	Given the addresses of the orign and selected address, it will display the directions on this map.
 		*/
 		function loadDirections(){
 			originSelect = document.getElementById("origin-select");
 			selectedOrigin = originSelect.options[originSelect.selectedIndex].value;
-
 			destinationSelect = document.getElementById("destination-select");
 			selectedDestination = destinationSelect.options[destinationSelect .selectedIndex].value;
-			
+
 			directions ={
 				origin: selectedOrigin,
 				destination: selectedDestination,
@@ -77,8 +76,11 @@
 			});
 			directionsDisplay.setMap(map);
 			directionsDisplay.setPanel(document.getElementById('directions-panel'));
-
 		}
 	</script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJUG4FX4vz-rt3e6UQSMYP6pKn-dKjoyA&callback=initMap"></script>
+
+	{% if dynamic_image %}
+		<img src={{dynamic_image}}>
+	{% endif %}
 </body>
