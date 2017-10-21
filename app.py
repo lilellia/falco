@@ -38,14 +38,4 @@ def result():
 	return render_template('result.html', dynamic_image=url_for('static', filename='smith_lab_2.png'))
 
 if __name__ == '__main__':
-	port = int(os.environ.get('PORT', 5000))
-	app.run(host='127.0.0.1', port=port, debug=True)
-	process(Image.open('smith_lab_2.png'), os.path.join('maps', 'map_data', 'smith_lab_2.txt'))
-
-	graph = Graph.from_file(os.path.join('maps', 'map_data', 'smith_lab_2.txt'))
-	start = graph.get(778, 411)	# 94
-	end = graph.get(245, 373) # 138
-
-	cost, path = graph.dijkstra(start, end)
-	dynamic_image = genimg2D(os.path.join('maps', 'bw_maps', 'smith_lab_2.png'), path)
-	# dynamic_image.show()
+	app.run()
