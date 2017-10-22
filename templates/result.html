@@ -5,8 +5,72 @@
 <head>
 	<title>Project Falco!</title>
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
-
-	{% if dynamic_image %}
-		<img src={{dynamic_image}}>
-	{% endif %}
 </head>
+
+<body>
+	<form action="" method="POST">
+		<button style="background-color:#1565C0;color:white; font-weight:bold;">Back</button>
+	</form>
+	<br>
+	<table>
+		<tr>
+			<td><h1>Start:&nbsp;&nbsp;</h1></td>
+			<td><h1>{{start_bldg}}&nbsp;&nbsp;</h1></td>
+			<td><h1>{{start_room}}</h1></td>
+		</tr>
+		<tr>
+			<td><h1>End:&nbsp;&nbsp;</h1></td>
+			<td><h1>{{dest_bldg}}&nbsp;&nbsp;</h1></td>
+			<td><h1>{{dest_room}}</h1></td>
+		</tr>
+	</table>
+
+	{% for map in bldg_maps %}
+		<img src={{map}}>
+		<p></p>
+	{% endfor %}
+
+	{% if gmaps %}
+		<div id="map" style="height:400px;width:100%;"></div>
+		<div id="directions-panel" style="height:100px;width100%"></div>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJUG4FX4vz-rt3e6UQSMYP6pKn-dKjoyA"></script>
+		<script>
+			var directionsService;
+			var map;
+			var directionsDisplay;
+			/**
+			*	Configure and init the map
+			*	@requires: There is an item,preferably a div, of id "map"
+			*	@requires: There is an item,preferably a div of id "directions-panel"
+			*/
+				directionsService = new google.maps.DirectionsService();
+				numbersGarden = {lat:40.002256, lng: -83.016232};
+				map = new google.maps.Map(document.getElementById('map'), {zoom:16, center: numbersGarden});
+				directionsDisplay = new google.maps.DirectionsRenderer();
+			/**
+			*	Given the addresses of the origin and selected address, it will display the directions on this map.
+			*/
+
+				var selectedOrigin = "{{ start_bldg }}";
+				var selectedDestination = "{{ dest_bldg }}";
+				// originSelect = {{start_bldg}} // document.getElementById("origin-select");
+				// selectedOrigin = originSelect.options[originSelect.selectedIndex].value;
+				// destinationSelect = document.getElementById("destination-select");
+				// selectedDestination = destinationSelect.options[destinationSelect .selectedIndex].value;
+				directions ={
+					origin: selectedOrigin,
+					destination: selectedDestination,
+					travelMode: 'WALKING'
+				};
+				console.log(directions);
+				directionsService.route(directions, function(result, status){
+					if(status == 'OK'){
+						directionsDisplay.setDirections(result);
+					}
+				});
+				directionsDisplay.setMap(map);
+				directionsDisplay.setPanel(document.getElementById('directions-panel'));
+
+		</script>
+	{% endif %}
+</body>

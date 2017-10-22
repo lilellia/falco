@@ -9,78 +9,39 @@
 </head>
 
 <body>
-	<div>Sample Text </div>
+	<h1>Project Falco</h1>
+	<p>You know how Google Maps is great <i>outside</i>?
+		Just imagine if you had Google Maps <i>inside</i>!
+		<br>
+		Just remember, this is a proof-of-concept developed for HackOHI/O 2017.
+		Because of the time limit, only three maps (Smith Lab basement/1st floor
+		and Scott Lab 1st floor) are implemented.
+	</p>
+	<p></p>
 	{% if error %} <div style="color:red"> {{ error.msg }} </div> {% endif %}
-	<table>
-		<thead>
-			<th>Location</th>
-			<th>Room Number</th>
-		</thead>
-		<tbody>
-		<tr>
-		<td><select id="origin-select">
-			{% for spot in locations %}
-				<option value="{{ spot }}">{{spot}}</option>
-			{% endfor %}
-			<option value = "174 W 18th Ave Columbus, OH 43210" selected="selected">Smith Lab</option>
-			<option value = "1739 N High St Columbus, OH 43210">Ohio Union</option>
-		</select></td>
-		<td><input type="text"><br></td>
-		</tr><tr><td>
-		<select id="destination-select">
-			{% for spot in locations %}
-				<option value="{{ spot }}">{{spot}}</option>
-			{% endfor %}
-				<option value = "174 W 18th Ave Columbus, OH 43210" selected="selected">Smith Lab</option>
-				<option value = "1739 N High St Columbus, OH 43210">Ohio Union</option>
-		</select></td><td>
-		<input type="text"><br></td></tr>
-		<tr><td>
-		<button onclick="loadDirections()" style="background-color:#1565C0;color:white; font-weight:bold;width:100%;">Submit</button></td></tr></tbody>
-	</table>
-	<div id="map" style="height:400px;width:100%;"></div>
-	<div id="directions-panel" style="height:100px;width100%"></div>
-	<script>
-		var directionsService;
-		var map;
-		var directionsDisplay;
-		/**
-		*	Configure and init the map
-		*	@requires: There is an item,preferably a div, of id "map"
-		*	@requires: There is an item,preferably a div of id "directions-panel"
-		*/
-		function initMap(){
-			directionsService = new google.maps.DirectionsService();
-			numbersGarden = {lat:40.002256, lng: -83.016232};
-			map = new google.maps.Map(document.getElementById('map'), {zoom:16, center: numbersGarden});
-			directionsDisplay = new google.maps.DirectionsRenderer();
-		}
-		/**
-		*	Given the addresses of the orign and selected address, it will display the directions on this map.
-		*/
-		function loadDirections(){
-			originSelect = document.getElementById("origin-select");
-			selectedOrigin = originSelect.options[originSelect.selectedIndex].value;
-			destinationSelect = document.getElementById("destination-select");
-			selectedDestination = destinationSelect.options[destinationSelect .selectedIndex].value;
-
-			directions ={
-				origin: selectedOrigin,
-				destination: selectedDestination,
-				travelMode: 'WALKING'
-			};
-			directionsService.route(directions, function(result, status){
-				if(status == 'OK'){
-					directionsDisplay.setDirections(result);
-				}
-			});
-			directionsDisplay.setMap(map);
-			directionsDisplay.setPanel(document.getElementById('directions-panel'));
-		}
-	</script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJUG4FX4vz-rt3e6UQSMYP6pKn-dKjoyA&callback=initMap"></script>
-
-	{% if dynamic_image %}
-		<img src={{dynamic_image}}>
-	{% endif %}
+	<form action="" method="post">
+		<table>
+			<thead>
+				<th>Location</th>
+				<th>Room Number</th>
+			</thead>
+			<tbody>
+			<tr>
+			<td><select name="origin-select">
+				{% for loc in locations %}
+					<option value="{{ loc.addr }}">{{ loc.name }}</option>
+				{% endfor %}
+			</select></td>
+			<td><input type="text" name="origin-room"><br></td>
+			</tr><tr><td>
+			<select name="destination-select">
+				{% for loc in locations %}
+					<option value="{{ loc.addr }}">{{ loc.name }}</option>
+				{% endfor %}
+			</select></td><td>
+			<input type="text" name="destination-room"><br></td></tr>
+			<tr><td>
+			<button style="background-color:#1565C0;color:white; font-weight:bold;width:100%;">Submit</button></td></tr></tbody>
+		</table>
+	</form>
 </body>
