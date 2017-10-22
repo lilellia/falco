@@ -1,0 +1,25 @@
+{
+	"174 W 18th Ave Columbus, OH 43210": {
+		"building_name": "Smith Lab",
+		"map_data": "smith_lab.txt",
+		"bw_maps": {
+			"0": "smith_lab_2.png",
+			"1": "smith_lab_3.png"
+		},
+		"processed_maps": {
+			"0": "smith_lab_2.png",
+			"1": "smith_lab_3.png"
+		}
+	},
+
+	"201 W 19th Ave, Columbus, OH 43210": {
+		"building_name": "Scott Lab",
+		"map_data": "scott_lab.txt",
+		"bw_maps": {
+			"1": "scott_lab_2.png"
+		},
+		"processed_maps": {
+			"1": "scott_lab_2.png"
+		}
+	}
+}
