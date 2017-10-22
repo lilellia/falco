@@ -1,22 +1,27 @@
 from math import inf as infinity, sqrt
 import re
+from repr_mixin import ReprMixin
 
-class Node:
-	def __init__(self, x, y, label=None, connections=None):
-		self.x, self.y = x, y
+class Node(ReprMixin):
+	def __init__(self, x, y, z, label=None, connections=None):
+		self.x, self.y, self.z = x, y, z
 		self.label = label
 		self.connections = list(connections) if connections else list()
-
-	def __repr__(self):
-		return f'Node(x={self.x}, y={self.y}, label={self.label}, connections={self.connections})'
 
 class Graph:
 	def __init__(self, nodes=None):
 		self.nodes = list(nodes) if nodes else list()
 
-	def get(self, x, y):
+	def get_from_coordinates(self, x, y, z):
 		for node in self.nodes:
-			if node.x == x and node.y == y:
+			if node.x == x and node.y == y and node.z == z:
+				return node
+		else:
+			return None
+
+	def get_from_label(self, label):
+		for node in self.nodes:
+			if node.label == label:
 				return node
 		else:
 			return None
@@ -30,14 +35,15 @@ class Graph:
 		for line in lines:
 			x = int(re.search('x=(\d+)', line).group(1))
 			y = int(re.search('y=(\d+)', line).group(1))
+			z = int(re.search('z=(\d+)', line).group(1))
 			label = re.search('label=(.*?), ', line).group(1)
-			conn = re.findall('\(\d+, \d+\)', line)
+			conn = re.findall('\(\d+, \d+, \d+\)', line)
 
 			connections = []
 			for c in conn:
 				connections.append(list(map(int, re.findall('\d+', c))))
 
-			n = Node(x, y, label, connections)
+			n = Node(x, y, z, label, connections)
 			nodes.append(n)
 
 		return cls(nodes)
@@ -77,10 +83,11 @@ class Graph:
 			current = sorted(unvisited, key=lambda node: node.cost)[0]
 
 			for pointer in current.connections:
-				node = self.get(*pointer)
+				node = self.get_from_coordinates(*pointer)
 				xx = current.x - node.x
 				yy = current.y - node.y
-				d = sqrt(xx * xx + yy * yy)
+				zz = current.z - node.z
+				d = sqrt(xx * xx + yy * yy + zz * zz)
 
 				dist = current.cost + d
 				if dist < node.cost:
